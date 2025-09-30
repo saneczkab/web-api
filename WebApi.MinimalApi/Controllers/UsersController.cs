@@ -54,4 +54,13 @@ public class UsersController : Controller
         
         return CreatedAtRoute(nameof(GetUserById), new { userId = entity.Id }, createdId);
     }
+
+    [HttpDelete("{userId:guid}")]
+    public IActionResult DeleteUser([FromRoute] Guid userId)
+    {
+        if (_userRepository.FindById(userId) is null)
+            return NotFound();
+        _userRepository.Delete(userId);
+        return NoContent();
+    }
 }
