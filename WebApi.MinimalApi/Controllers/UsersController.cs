@@ -20,7 +20,7 @@ public class UsersController : Controller
         _mapper = mapper;
     }
 
-    [HttpGet("{userId}")]
+    [HttpGet("{userId}", Name = nameof(GetUserById))]
     public ActionResult<UserDto> GetUserById([FromRoute] Guid userId)
     {
         var user = _userRepository.FindById(userId);
@@ -33,8 +33,20 @@ public class UsersController : Controller
     }
 
     [HttpPost]
-    public IActionResult CreateUser([FromBody] object user)
+    public IActionResult CreateUser([FromBody] CreateUserDto? user)
     {
-        throw new NotImplementedException();
+        if (user is null)
+            return BadRequest();
+        
+        if (string.IsNullOrEmpty(user.Login) || !user.Login.All(char.IsLetterOrDigit))
+        {
+            ModelState.AddModelError("Login", "Invalid login format");
+            return UnprocessableEntity(ModelState);
+        }
+        
+        var entity = _mapper.Map<UserEntity>(user);
+        var createdId = _userRepository.Insert(entity).Id;
+        
+        return CreatedAtRoute(nameof(GetUserById), new { userId = entity.Id }, createdId);
     }
 }

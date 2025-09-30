@@ -9,7 +9,7 @@ namespace Tests
             var testsToRun = new string[]
             {
                 typeof(Task1_GetUserByIdTests).FullName,
-                //typeof(Task2_CreateUserTests).FullName,
+                typeof(Task2_CreateUserTests).FullName,
                 //typeof(Task3_UpdateUserTests).FullName,
                 //typeof(Task4_PartiallyUpdateUserTests).FullName,
                 //typeof(Task5_DeleteUserTests).FullName,
@@ -20,7 +20,7 @@ namespace Tests
             new AutoRun().Execute(new[]
             {
                 // раскомментируй, чтоб останавливать выполнение после первой ошибки
-                // "--stoponerror", 
+                "--stoponerror", 
                 "--noresult",
                 "--test=" + string.Join(",", testsToRun)
             });
