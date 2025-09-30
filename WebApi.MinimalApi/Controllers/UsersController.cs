@@ -21,6 +21,7 @@ public class UsersController : Controller
     }
 
     [HttpGet("{userId}", Name = nameof(GetUserById))]
+    [HttpHead("{userId}", Name = nameof(GetUserById))]
     public ActionResult<UserDto> GetUserById([FromRoute] Guid userId)
     {
         var user = _userRepository.FindById(userId);
@@ -29,7 +30,11 @@ public class UsersController : Controller
         
         var userDto = _mapper.Map<UserDto>(user);
         
-        return userDto;
+        if (!HttpMethods.IsHead(Request.Method))
+            return userDto;
+            
+        Response.Headers.ContentType = "application/json; charset=utf-8";
+        return Ok();
     }
 
     [HttpPost]
