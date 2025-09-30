@@ -14,8 +14,8 @@ namespace Tests
                 //typeof(Task4_PartiallyUpdateUserTests).FullName,
                 typeof(Task5_DeleteUserTests).FullName,
                 typeof(Task6_HeadUserByIdTests).FullName,
-                //typeof(Task7_GetUsersTests).FullName,
-                //typeof(Task8_GetUsersOptionsTests).FullName,
+                typeof(Task7_GetUsersTests).FullName,
+                typeof(Task8_GetUsersOptionsTests).FullName,
             };
             new AutoRun().Execute(new[]
             {
