@@ -93,6 +93,26 @@ public class UsersController : Controller
         return CreatedAtRoute(nameof(GetUserById), new { userId = entity.Id }, createdId);
     }
 
+    [HttpPut("{userId}")]
+    public IActionResult UpdateUser([FromRoute] string userId, [FromBody] UpdateUserDto? user)
+    {
+        if (!Guid.TryParse(userId, out var userGuid) || user == null)
+            return BadRequest();
+
+        if (!ModelState.IsValid)
+            return UnprocessableEntity(ModelState);
+
+
+        var entity = new UserEntity(userGuid);
+        _mapper.Map(user, entity);
+        _userRepository.UpdateOrInsert(entity, out var inserted);
+        
+        if (inserted)
+            return CreatedAtRoute(nameof(GetUserById), new { userId = userGuid }, userGuid);
+        
+        return NoContent();
+    }
+    
     [HttpDelete("{userId:guid}")]
     public IActionResult DeleteUser([FromRoute] Guid userId)
     {
