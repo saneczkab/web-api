@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using WebApi.MinimalApi.Domain;
 using WebApi.MinimalApi.Models;
+using WebApi.MinimalApi.Samples;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.UseUrls("http://localhost:5000");
@@ -32,8 +33,13 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.CreateMap<UpdateUserDto, UserEntity>();
 }, new System.Reflection.Assembly[0]);
 
+builder.Services.AddSwaggerGeneration();
+
 var app = builder.Build();
 
 app.MapControllers();
+
+app.UseSwaggerWithUI();
+app.GetSwaggerDocument("web-api");
 
 app.Run();
